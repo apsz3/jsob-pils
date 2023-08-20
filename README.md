@@ -9,6 +9,8 @@ Pils/JSOB: This is a combo project written in GDScript for the Godot game engine
 
 The game logic is simple. Jobs are defined under the `jobs` heading, with a `j` prefix. Jobs take a certain time `t`, and have a `cost` in `materials` needed to start it. Jobs `yield` more `materials`, and are coupled with textual descriptions when `completed`. `actions` are like jobs, in that the player can activate them on the UI, but they don't cost or yield resources, but instead toggle game `state_id` changes, which can be used as predicates in situations such as `unlocks`.  
 
+We also leverage a DSL Godot provides, with some global state variables defined in our engine, by putting expression in `{}`. 
+
 Notice how in the screenshot some jobs are greyed-out; this is because the `material` threshold isn't yet reached to activate them. Also notice that some actions and jobs defined in the DSL don't appear at all on the screen -- this is because the player's game state has not reached a point where the jobs/actions should be considered "unlocked", and available to the player to see.
 
 ```lisp
@@ -16,36 +18,39 @@ Notice how in the screenshot some jobs are greyed-out; this is because the `mate
     (materials
         (mLand (desc "The firmament"))
         (mMedicinalHerbs (desc "Medicinal herbs"))
-				(mBerries (desc "Berries"))
-				(mBranches (desc "Branches"))
-				(mWater (desc "Water"))
-				(mWood (desc "Wood")))
+	(mBerries (desc "Berries"))
+	(mBranches (desc "Branches"))
+	(mWater (desc "Water"))
+	(mWood (desc "Wood")))
     (inventory
-				(mLand 0) (mWood 0))
+	(mLand 0) (mWood 0))
     (jobs
         (jClearTheLand
             (t 10)
-						(yield [@mLand (pils (if (> 1 0) 5 0))])
-            (desc (completed "Some land was cleared.") (display "Clear the Land")))
-				(jForageTheWood
-					(t 20) (cost [@mWater 1]) (requires [@mWater 1])
-					(yield [[@mBerries {randi() % 15}] [@mMedicinalHerbs {randi() % 5}]])
-					(desc
-						(completed "A basketful of woodland bounty was collected")
-						(display "Forage the Wood")))
-				(jFetchWater
-					(t 15)
-					(yield [@mWater 1])
-					(desc
-						(completed "A bucket of water was fetched from the river")
-						(display "Fetch Water")))
-				(jSplitTheTrees
-						(t 5)
-						(yield [
-							[@mBranches {2 + randi() % 5}]
-							[@mWood {3 + randi() % 5}]])
-						(desc (completed "Some trees were split")
-									(display "Split the Trees"))))
+   	    (yield [@mLand (pils (if (> 1 0) 5 0))])
+            (desc 
+		(completed "Some land was cleared.") 
+		(display "Clear the Land")))
+	(jForageTheWood
+		(t 20) (cost [@mWater 1]) (requires [@mWater 1])
+		(yield [[@mBerries {randi() % 15}] [@mMedicinalHerbs {randi() % 5}]])
+		(desc
+			(completed "A basketful of woodland bounty was collected")
+			(display "Forage the Wood")))
+	(jFetchWater
+		(t 15)
+		(yield [@mWater 1])
+		(desc
+			(completed "A bucket of water was fetched from the river")
+			(display "Fetch Water")))
+	(jSplitTheTrees
+		(t 5)
+		(yield [
+			[@mBranches {2 + randi() % 5}]
+			[@mWood {3 + randi() % 5}]])
+		(desc 
+			(completed "Some trees were split") 
+			(display "Split the Trees"))))
 		(actions
 			(aPitchTents
 				(state_id "pitch_tents")
