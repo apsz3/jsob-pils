@@ -9,7 +9,7 @@ This is a combo project written in GDScript for the Godot game engine. Pils is a
 
 The game logic is simple. Jobs are defined under the `jobs` heading, with a `j` prefix. Jobs take a certain time `t`, and have a `cost` in `materials` needed to start it. Jobs `yield` more `materials`, and are coupled with textual descriptions when `completed`. `actions` are like jobs, in that the player can activate them on the UI, but they don't cost or yield resources, but instead toggle game `state_id` changes, which can be used as predicates in situations such as `unlocks`.  
 
-We also leverage a DSL Godot provides, with some global state variables defined in our engine, by putting expression in `{}`. 
+We also leverage a DSL Godot provides, with some global state variables defined in our engine, by putting expressions in `{}`. 
 
 Notice how in the screenshot some jobs are greyed-out; this is because the `material` threshold isn't yet reached to activate them. Also notice that some actions and jobs defined in the DSL don't appear at all on the screen -- this is because the player's game state has not reached a point where the jobs/actions should be considered "unlocked", and available to the player to see.
 
