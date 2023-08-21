@@ -5,7 +5,7 @@
 This is a combo project written in GDScript for the Godot game engine. Pils is a Lisp-like language that can be embedded into a Godot game. JSOB is a data declaration language, which is syntactically an S-expression. What is somewhat interesting is that JSOB can contain snippets of Pils, allowing for progammatic value assignment like Jsonnet; JSOB can also reference itself (via `@`), similar to YAML. I used JSOB as a DSL for an [incremental-style game](https://en.wikipedia.org/wiki/Incremental_game]), creating an engine that allows for an entire game to be defined in the DSL. For example, the DSL code below (copied in full from the file `witch.jsob` in this repo) defines the game rendered in the following screenshot. Note the contrived example of `pils` on line 21, `(yield [@mLand (pils (if (> 1 0) 5 0))])`.
 
 
-![jsob-demo](https://github.com/apsz3/jsob-pils/assets/62445385/f0ae96d3-6d98-44e6-8f9c-95f5f6132ff2)
+![jsob-demo](https://github.com/apsz3/jsob-pils/assets/62445385/ceb43fb0-d178-43fa-abdd-eff84abd3f55)
 
 The game logic is simple. Jobs are defined under the `jobs` heading, with a `j` prefix. Jobs take a certain time `t`, and have a `cost` in `materials` needed to start it. Jobs `yield` more `materials`, and are coupled with textual descriptions when `completed`. `actions` are like jobs, in that the player can activate them on the UI, but they don't cost or yield resources, but instead toggle game `state_id` changes, which can be used as predicates in situations such as `unlocks`.  
 
